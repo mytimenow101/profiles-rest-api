@@ -94,4 +94,11 @@ class HelloViewSet(viewsets.ViewSet):
 
     def destroy(self, request, pk=None):
         """Distroys the object"""
-        return Response({'http_method': 'DELETE'})      
+        return Response({'http_method': 'DELETE'})
+
+
+
+class UserProfileViewSet(viewSets.ModelViewSet):
+    """Handle creating and updating profiles"""
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
