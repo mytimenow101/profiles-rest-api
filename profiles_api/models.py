@@ -7,12 +7,27 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles the methods to manage the user model"""
 
+    @classmethod
+    def normalize_email(cls,email):
+        """
+        Normalize the email address by lowercasing the domain part of the it.
+        """
+        email = email or ''
+        try:
+            email_name, domain_part = email.strip().rsplit('@', 1)
+        except ValueError:
+            pass
+        else:
+            email = '@'.join([email_name, domain_part.lower()])
+        return email
+
+
     def create_user(self, email, name, password=None):
         """Create a new user porfile"""
         if not email:
             raise ValueError('User must have an email address')
 
-        email = normaalize_email(email)
+        email = self.normalize_email(email)
         user = self.model(email=email, name=name)
 
         user.set_password(password)
